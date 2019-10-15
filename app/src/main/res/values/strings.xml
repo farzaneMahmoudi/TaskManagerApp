@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Task Manager</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="toest_message_complete_all_fields">Please complete all fields</string>
+    <string name="toest_message_login_first">Please sign up first </string>
+    <string name="you_are_login">you are login</string>
+    <string name="Invalid_message">Invalid password or username</string>
+    <string name="button_add">add</string>
+    <string name="task_manager" />
+    <string name="button_sign_up">sign up</string>
+    <string name="button_log_in">log in</string>
+    <string name="menu_icon_user_account">user_account</string>
+    <string name="menu_icon_search">search</string>
+    <string name="TOAST_USER_NOT_EXIST">this user does not exist</string>
+    <string name="TOAST_COMPLETE_ALL_FIELDS">all fields must be complete</string>
+    <string name="TOAST_DATA_DOES_NOT_MATCH">all fields must be complete</string>
+    <string name="TOAST_TITLE_MUST_BE_COMPLETE">title can not be empty</string>
+    <string name="TOAST_USERNAME_IS_EXIST">this username is already exist</string>
+    <string name="TOAST_NOT_MATCH">password and username does not match</string>
+    <string name="todo_radiobutton">todo</string>
+
+    <string name="TITLE_SHARE">share this task via</string>
+    <string name="task_report">title: %1$s!!! The date of task: %2$s,the Description :  %3$s and the state of task: %4$s</string>
+    <string name="task_report_subject">Task Report</string>
+</resources>
+
