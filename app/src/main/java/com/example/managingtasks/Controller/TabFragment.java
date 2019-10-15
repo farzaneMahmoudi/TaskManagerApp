@@ -1,5 +1,7 @@
 package com.example.managingtasks.Controller;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -143,13 +145,12 @@ public class TabFragment extends Fragment {
             findItemViewById(itemView);
 
 
-
             mButtonShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.task_report_subject));
+                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.task_report_subject));
                     intent.putExtra(Intent.EXTRA_TEXT, getTaskReport(mTask));
                     intent = intent.createChooser(intent, getString(R.string.TITLE_SHARE));
                     startActivity(intent);
@@ -204,7 +205,7 @@ public class TabFragment extends Fragment {
 
         public taskAdapter(List<Task> taskList) {
             mTasksList = taskList;
-            completeList = new ArrayList<>();
+            completeList = new ArrayList<>(taskList);
         }
 
         @NonNull
@@ -246,11 +247,13 @@ public class TabFragment extends Fragment {
                 } else {
                     String filterPattern = charSequence.toString().toLowerCase().trim();
 
-                    for (Task item :
-                            completeList) {
-                        if (item.getTitle().toLowerCase().contains(filterPattern)) {
+                    for (Task item : completeList) {
+                        if (item.getTitle().toLowerCase().startsWith(filterPattern) ||
+                                item.getDescription().toLowerCase().contains(filterPattern) ||
+                                item.getSimpleDate().contains(filterPattern) || item.getSimpleTime().startsWith(filterPattern)) {
                             filterTasks.add(item);
                         }
+
                     }
                 }
 
@@ -270,7 +273,7 @@ public class TabFragment extends Fragment {
 
     public void notifyDataSetChanged() {
 
-        mTaskList =Repository.getInstance(getActivity().getApplicationContext()).getListTasksPerState(userID,stateTask);
+        mTaskList = Repository.getInstance(getActivity().getApplicationContext()).getListTasksPerState(userID, stateTask);
 
         updateUI();
         mTaskAdapter.setTasksList(mTaskList);
@@ -324,7 +327,7 @@ public class TabFragment extends Fragment {
                     mTaskList = null;
                 else
                     mTaskList = Repository.getInstance(getActivity().getApplicationContext()).getListTasksPerState(userID, stateTask);
-                if ( mTaskList == null   || mTaskList.size()==0) {
+                if (mTaskList == null || mTaskList.size() == 0) {
                     mImageView.setVisibility(View.VISIBLE);
                     mImageView.setBackgroundResource(R.drawable.image_no_task);
                 } else {
@@ -335,7 +338,7 @@ public class TabFragment extends Fragment {
             }
             case 1: {
                 mTaskList = Repository.getInstance(getActivity().getApplicationContext()).getListTasksPerState(userID, stateTask);
-                if ( mTaskList == null   || mTaskList.size()==0) {
+                if (mTaskList == null || mTaskList.size() == 0) {
                     mImageView.setVisibility(View.VISIBLE);
                     mImageView.setBackgroundResource(R.drawable.image_no_task);
                 } else {
@@ -347,7 +350,7 @@ public class TabFragment extends Fragment {
 
             case 2: {
                 mTaskList = Repository.getInstance(getActivity().getApplicationContext()).getListTasksPerState(userID, stateTask);
-                if ( mTaskList == null   || mTaskList.size()==0) {
+                if (mTaskList == null || mTaskList.size() == 0) {
                     mImageView.setVisibility(View.VISIBLE);
                     mImageView.setBackgroundResource(R.drawable.image_no_task);
                 } else {
@@ -398,15 +401,33 @@ public class TabFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.activity_task_manager, menu);
+
+
+        MenuItem searchItem = menu.findItem(R.id.app_bar_search);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mTaskAdapter.getFilter().filter(newText);
+                mTaskAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_account: {
-
-
-
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                 builder1.setMessage("Are you sure you want to quit?");
@@ -461,10 +482,12 @@ public class TabFragment extends Fragment {
             }
 
             case R.id.app_bar_search: {
+
                 SearchView searchView = (SearchView) item.getActionView();
                 searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                searchView.setIconified(false);
                 searchView.setQueryHint("Search Here");
+
+
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String s) {
@@ -504,11 +527,10 @@ public class TabFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private String getTaskReport(Task task){
-        return getString(R.string.task_report,task.getTitle(),task.getSimpleDate(),task.getDescription(),
+    private String getTaskReport(Task task) {
+        return getString(R.string.task_report, task.getTitle(), task.getSimpleDate(), task.getDescription(),
                 task.getStateTask().toString());
     }
-
 
 
 }
