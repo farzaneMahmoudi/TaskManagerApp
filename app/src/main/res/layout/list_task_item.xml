@@ -24,6 +24,22 @@
             android:layout_height="match_parent"
             android:padding="4dp">
 
+            <ImageButton
+                android:id="@+id/button_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="165dp"
+                android:layout_marginRight="165dp"
+                android:background="#A0CCA0"
+                android:src="@drawable/ic_action_share"
+                android:text="share"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/text_view_state_item"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.771" />
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
@@ -37,22 +53,6 @@
             </ImageView>
 
             <TextView
-                android:id="@+id/text_view_first_alphabet_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:padding="24sp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="28dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintEnd_toEndOf="@+id/imageView"
-                app:layout_constraintHorizontal_bias="0.25"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="@+id/imageView"
-                tools:text="t"
-                />
-
-            <TextView
                 android:id="@+id/text_view_name_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,34 +61,35 @@
                 android:textSize="24sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="task1"
-                />
+                tools:text="task1" />
 
 
             <TextView
                 android:id="@+id/text_view_state_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:padding="8dp"
                 android:textSize="16sp"
-                android:layout_marginBottom="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_name_item"
-                tools:text="3 oct 2020"
-                />
+                tools:text="3 oct 2020" />
 
 
-            <Button
-                android:id="@+id/button_share"
+            <TextView
+                android:id="@+id/text_view_first_alphabet_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="share"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/text_view_name_item"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_margin="2dp"
+                android:padding="24sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="28dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
 
-
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView"
+                tools:text="ا" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_left"

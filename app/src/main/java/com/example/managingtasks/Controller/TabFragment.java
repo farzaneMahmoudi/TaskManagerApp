@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -135,7 +136,7 @@ public class TabFragment extends Fragment {
         private TextView mTextViewDate;
         private TextView mTextViewFirstAlphabetOfTitle;
         private Task mTask;
-        private Button mButtonShare;
+        private ImageButton mButtonShare;
 
         public taskHolder(@NonNull View itemView) {
             super(itemView);
@@ -181,11 +182,11 @@ public class TabFragment extends Fragment {
             mTextViewDate.setText(mTask.getSimpleDate() + " - " + mTask.getSimpleTime());
             mTextViewFirstAlphabetOfTitle.setText(task.getTitle().charAt(0) + "");
 
-            if (position % 2 == 0)
+         /*   if (position % 2 == 0)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     itemView.setBackground(getActivity().getDrawable(R.drawable.bg_edit_text));
                 } else
-                    itemView.setBackgroundColor(getResources().getColor(R.color.Light_green));
+                    itemView.setBackgroundColor(getResources().getColor(R.color.Light_green));*/
 
         }
     }
@@ -403,7 +404,33 @@ public class TabFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_account: {
-                startActivity(MainActivity.newIntent(getActivity()));
+
+
+
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                builder1.setMessage("Are you sure you want to quit?");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                startActivity(MainActivity.newIntent(getActivity()));
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+                return true;
             }
             case R.id.menu_item_delete: {
 
