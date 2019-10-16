@@ -38,6 +38,9 @@ public class Repository {
         daoSession = daoMaster.newSession();
         mTaskDao = daoSession.getTaskDao();
         mUserDao = daoSession.getUserDao();
+
+        User user = new User("admin","123123");
+        mUserDao.insert(user);
     }
 
     public static Repository getInstance(Context context) {
@@ -116,6 +119,13 @@ public class Repository {
         daoSession.clear();
     }
 
+    public List<User> getAllUsers(){
+        return mUserDao.loadAll();
+    }
+
+    public void deleteUser(User user){
+        mUserDao.delete(user);
+    }
 
 }
 

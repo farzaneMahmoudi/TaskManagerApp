@@ -183,12 +183,6 @@ public class TabFragment extends Fragment {
             mTextViewDate.setText(mTask.getSimpleDate() + " - " + mTask.getSimpleTime());
             mTextViewFirstAlphabetOfTitle.setText(task.getTitle().charAt(0) + "");
 
-         /*   if (position % 2 == 0)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    itemView.setBackground(getActivity().getDrawable(R.drawable.bg_edit_text));
-                } else
-                    itemView.setBackgroundColor(getResources().getColor(R.color.Light_green));*/
-
         }
     }
 
@@ -205,6 +199,7 @@ public class TabFragment extends Fragment {
 
         public taskAdapter(List<Task> taskList) {
             mTasksList = taskList;
+            if(taskList != null)
             completeList = new ArrayList<>(taskList);
         }
 

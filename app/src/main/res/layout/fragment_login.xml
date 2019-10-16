@@ -37,6 +37,18 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
+        <TextView
+            android:id="@+id/textview_login_as_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="login as admin"
+            android:padding="8dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintTop_toBottomOf="@+id/button_sign_up" />
+
         <EditText
             android:id="@+id/username_edit_text"
             android:layout_width="0dp"

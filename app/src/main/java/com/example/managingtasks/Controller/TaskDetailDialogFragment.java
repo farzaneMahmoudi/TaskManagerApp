@@ -103,7 +103,11 @@ public class TaskDetailDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Repository.getInstance(getActivity()).deleteTask(mTask);
-                        ((TabFragment) getTargetFragment()).notifyDataSetChanged();
+                        if(getTargetFragment() instanceof TabFragment)
+                            ((TabFragment) getTargetFragment()).notifyDataSetChanged();
+                        else if(getTargetFragment() instanceof AllTasksOfEachUserFragment)
+                            ((AllTasksOfEachUserFragment) getTargetFragment()).notifyDataSetChanged();
+
                         dismiss();
                     }
                 })
@@ -118,7 +122,11 @@ public class TaskDetailDialogFragment extends DialogFragment {
 
                         changeStateTask();
                         Repository.getInstance(getActivity()).updateTask(mTask);
+                        if(getTargetFragment() instanceof TabFragment)
                         ((TabFragment) getTargetFragment()).notifyDataSetChanged();
+                        else if(getTargetFragment() instanceof AllTasksOfEachUserFragment)
+                        ((AllTasksOfEachUserFragment) getTargetFragment()).notifyDataSetChanged();
+
                     }
                 })
                 .setNeutralButton("cancel", new DialogInterface.OnClickListener() {
