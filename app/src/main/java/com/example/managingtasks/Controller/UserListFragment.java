@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.managingtasks.Model.User;
 import com.example.managingtasks.R;
@@ -73,9 +74,9 @@ public class UserListFragment extends Fragment {
 
     private class userHolder extends RecyclerView.ViewHolder {
 
-        private EditText mEditTextUserName;
-        private EditText mEditTextNumOfTasks;
-        private EditText mEditTextRegisterTime;
+        private TextView mTextViewUsername;
+        private TextView mTextViewNumOfTasks;
+        private TextView mTextViewRegisterTime;
         private ImageButton mImageButtonDelete;
         private User mUser;
 
@@ -126,15 +127,15 @@ public class UserListFragment extends Fragment {
 
         public void bind(User user) {
             mUser = user;
-            mEditTextUserName.setText(user.getUsername());
-            mEditTextNumOfTasks.setText(Repository.getInstance(getContext()).getUserAllTask(user.getUser_uuid()).size() + "");
-            mEditTextRegisterTime.setText(user.getRegisterTime());
+            mTextViewUsername.setText(user.getUsername());
+            mTextViewNumOfTasks.setText(Repository.getInstance(getContext()).getUserAllTask(user.getUser_uuid()).size() + "");
+            mTextViewRegisterTime.setText(user.getRegisterTime());
         }
 
         private void findView(@NonNull View itemView) {
-            mEditTextNumOfTasks = itemView.findViewById(R.id.edit_text_num_of_tasks);
-            mEditTextRegisterTime = itemView.findViewById(R.id.edit_text_register_time);
-            mEditTextUserName = itemView.findViewById(R.id.edit_text_username);
+            mTextViewNumOfTasks = itemView.findViewById(R.id.edit_text_num_of_tasks);
+            mTextViewRegisterTime = itemView.findViewById(R.id.edit_text_register_time);
+            mTextViewUsername = itemView.findViewById(R.id.edit_text_username);
             mImageButtonDelete = itemView.findViewById(R.id.image_button_delete);
         }
 

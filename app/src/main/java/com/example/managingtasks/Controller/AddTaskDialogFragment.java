@@ -1,8 +1,13 @@
 package com.example.managingtasks.Controller;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -10,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +28,22 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.managingtasks.Model.Task;
 import com.example.managingtasks.R;
 import com.example.managingtasks.Repository.Repository;
+import com.example.managingtasks.Utils.PictureUtils;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,12 +55,16 @@ public class AddTaskDialogFragment extends DialogFragment {
     private static final int REQUEST_CODE_TIME_PICKER = 3;
     private static final String TAG_DATE_PICKER = "DatePicker";
     private static final String TAG_TIME_PICKER = "TimePicker";
+    public static final String AUTHORITY_FILE_PROVIDER = "com.example.managingtasks.fileProvider";
+    public static final int REQUEST_CODE_CAPTURE_IMAGE = 6;
 
     private EditText mEditTextTitle;
     private EditText mEditTextDescription;
     private Button mButtonDate;
     private Button mButtonTime;
     private CheckBox mCheckBox;
+    private ImageButton mImageButtonCamera;
+    private ImageView mImageViewPicture;
 
 
     private Date tempTime;
@@ -60,7 +76,8 @@ public class AddTaskDialogFragment extends DialogFragment {
     private char firstAlphabetTitle;
     private Task mTask;
     private String user;
-
+    private Uri mPhotoUri;
+    private File mPhotoFile;
 
 
     public static AddTaskDialogFragment newInstance(int position, String username) {
@@ -85,6 +102,7 @@ public class AddTaskDialogFragment extends DialogFragment {
 
         setStateTask();
         setUser();
+
     }
 
 
@@ -99,12 +117,12 @@ public class AddTaskDialogFragment extends DialogFragment {
 
         findView(view);
         mTask = new Task(user);
+        mPhotoFile = Repository.getInstance(getContext()).getPhotoFile(mTask);
         mTask.setDate(new Date());
         mDate = mTask.getDate();
         tempTime = mTask.getDate();
         initUI();
         initListeners();
-
 
 
         return new AlertDialog.Builder(getActivity())
@@ -182,6 +200,12 @@ public class AddTaskDialogFragment extends DialogFragment {
 
             DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
             mButtonTime.setText(dateFormat.format(mTask.getDate()));
+        } else if (requestCode == REQUEST_CODE_CAPTURE_IMAGE) {
+            updatePhotoView();
+
+            getActivity().revokeUriPermission(
+                    mPhotoUri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
 
     }
@@ -192,6 +216,8 @@ public class AddTaskDialogFragment extends DialogFragment {
         mButtonDate = view.findViewById(R.id.button_date);
         mButtonTime = view.findViewById(R.id.button_time);
         mCheckBox = view.findViewById(R.id.checkBox);
+        mImageButtonCamera = view.findViewById(R.id.image_button_camera);
+        mImageViewPicture = view.findViewById(R.id.image_view_camera);
     }
 
     private void setUser() {
@@ -239,6 +265,43 @@ public class AddTaskDialogFragment extends DialogFragment {
             }
 
         });
+
+        mImageButtonCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPhotoFile == null)
+                    return;
+
+                mPhotoUri = FileProvider.getUriForFile(getContext(),
+                        AUTHORITY_FILE_PROVIDER,
+                        mPhotoFile);
+
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
+
+                List<ResolveInfo> cameraActivities = getActivity().getPackageManager()
+                        .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : cameraActivities) {
+                    getActivity().grantUriPermission(resolveInfo.activityInfo.packageName,
+                            mPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
+
+                try {
+                    startActivityForResult(intent, REQUEST_CODE_CAPTURE_IMAGE);
+                } catch (ActivityNotFoundException activityNotFound) {
+                    Toast.makeText(getActivity(), R.string.No_camera_found, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mImageViewPicture.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getAbsolutePath(), getActivity());
+            mImageViewPicture.setImageBitmap(bitmap);
+        }
     }
 
 

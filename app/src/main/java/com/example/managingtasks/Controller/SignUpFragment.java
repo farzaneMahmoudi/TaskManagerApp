@@ -68,7 +68,6 @@ public class SignUpFragment extends Fragment {
     }
 
     private void findView(View view) {
-
         mButtonSignUp = view.findViewById(R.id.button_sign_up);
         mEditTextUserName = view.findViewById(R.id.username_edit_text);
         mEditTextPassword = view.findViewById(R.id.password_edit_text);

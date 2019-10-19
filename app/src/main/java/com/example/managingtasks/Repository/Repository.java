@@ -17,7 +17,7 @@ import com.example.managingtasks.Model.UserDao;
 import org.greenrobot.greendao.query.DeleteQuery;
 import org.greenrobot.greendao.query.QueryBuilder;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ public class Repository {
     private static Repository instance;
 
     private Context mContext;
-   private TaskDao mTaskDao;
+    private TaskDao mTaskDao;
     private UserDao mUserDao;
     private DaoSession daoSession;
 
@@ -39,7 +39,7 @@ public class Repository {
         mTaskDao = daoSession.getTaskDao();
         mUserDao = daoSession.getUserDao();
 
-        User user = new User("admin","123123");
+        User user = new User("admin", "123123");
         mUserDao.insert(user);
     }
 
@@ -56,7 +56,7 @@ public class Repository {
     }
 
     public boolean isExistUser(String username) {
-     if (mUserDao.queryBuilder().where(UserDao.Properties.Username.eq(username)).unique() != null)
+        if (mUserDao.queryBuilder().where(UserDao.Properties.Username.eq(username)).unique() != null)
             return true;
         return false;
     }
@@ -71,7 +71,7 @@ public class Repository {
     }
 
     public void insertTask(Task task) {
-      mTaskDao.insert(task);
+        mTaskDao.insert(task);
     }
 
     public List<Task> getUserAllTask(String userId) {
@@ -80,7 +80,7 @@ public class Repository {
     }
 
     public List<Task> getListTasksPerState(String username, StateTask state) {
-      return mTaskDao.queryBuilder()
+        return mTaskDao.queryBuilder()
                 .where(TaskDao.Properties.User_uuid.eq(username), TaskDao.Properties.MStateTask.eq(state.getValue(state)))
                 .list();
 
@@ -96,7 +96,7 @@ public class Repository {
     }
 
     public Task getTaskById(String userId, UUID idTask) {
-    QueryBuilder<Task> qb = mTaskDao.queryBuilder();
+        QueryBuilder<Task> qb = mTaskDao.queryBuilder();
         qb.where(qb.and(TaskDao.Properties.User_uuid.eq(userId), TaskDao.Properties.TaskId.eq(idTask)));
         return qb.unique();
     }
@@ -119,12 +119,16 @@ public class Repository {
         daoSession.clear();
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return mUserDao.loadAll();
     }
 
-    public void deleteUser(User user){
+    public void deleteUser(User user) {
         mUserDao.delete(user);
+    }
+
+    public File getPhotoFile(Task task) {
+        return new File(mContext.getFilesDir(), task.getPhotoName());
     }
 
 }

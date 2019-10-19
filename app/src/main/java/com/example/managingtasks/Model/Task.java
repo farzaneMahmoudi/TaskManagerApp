@@ -11,31 +11,43 @@ import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Transient;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+
 import org.greenrobot.greendao.annotation.Generated;
 
 @Entity(nameInDb = "task")
-public class Task  {
+public class Task {
 
     @Id(autoincrement = true)
     private Long id;
 
-  /* @Property(nameInDb = "task_username")
-    private String task_user;*/
+    public String getPathPhoto() {
+        return pathPhoto;
+    }
+
+    public String getPhotoName() {
+        return "IMG_" + taskId + ".jpg";
+    }
+
+    public void setPathPhoto(String pathPhoto) {
+        this.pathPhoto = pathPhoto;
+    }
+
+    @Property(nameInDb = "pathPhoto")
+    private String pathPhoto;
 
     @Property(nameInDb = "user_uuid")
     private String user_uuid;
 
     @Property(nameInDb = "task_uuid")
     @Index(unique = true)
-    @Convert(converter = UuidConverter.class,columnType = String.class)
+    @Convert(converter = UuidConverter.class, columnType = String.class)
     private UUID taskId;
 
     @Property(nameInDb = "state")
-    @Convert(converter = StateConverter.class,columnType = Integer.class)
+    @Convert(converter = StateConverter.class, columnType = Integer.class)
     private StateTask mStateTask;
 
     @Property(nameInDb = "title")
@@ -57,17 +69,12 @@ public class Task  {
     @Transient
     private char firstAlphabetTitle;
 
-    public char getFirstAlphabetTitle() {
-        return firstAlphabetTitle;
-    }
-
     public void setDetailTask(StateTask stateTask, String title, String description, boolean isDon, char firstAlphabetTitle) {
         mStateTask = stateTask;
         mTitle = title;
         mDescription = description;
         mIsDon = isDon;
         this.firstAlphabetTitle = firstAlphabetTitle;
-        //   this.task_user = task_user;
     }
 
     public void setFirstAlphabetTitle(char firstAlphabetTitle) {
@@ -80,7 +87,6 @@ public class Task  {
     }
 
     public Task(String user_uuid) {
-        //this.user_uuid= user_uuid;
         this.user_uuid = user_uuid;
         taskId = UUID.randomUUID();
         mDate = new Date();
@@ -90,10 +96,11 @@ public class Task  {
         taskId = UUID;
     }
 
-    @Generated(hash = 1856564405)
-    public Task(Long id, String user_uuid, UUID taskId, StateTask mStateTask, String mTitle, String mDescription, boolean mIsDon,
-                Date mDate) {
+    @Generated(hash = 2045615810)
+    public Task(Long id, String pathPhoto, String user_uuid, UUID taskId, StateTask mStateTask, String mTitle, String mDescription,
+            boolean mIsDon, Date mDate) {
         this.id = id;
+        this.pathPhoto = pathPhoto;
         this.user_uuid = user_uuid;
         this.taskId = taskId;
         this.mStateTask = mStateTask;

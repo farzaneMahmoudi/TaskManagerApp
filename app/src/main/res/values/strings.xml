@@ -24,6 +24,7 @@
     <string name="TOAST_USERNAME_IS_EXIST">this username is already exist</string>
     <string name="TOAST_NOT_MATCH">password and username does not match</string>
     <string name="todo_radiobutton">todo</string>
+    <string name="No_camera_found">No camera found</string>
 
     <string name="TITLE_SHARE">share this task via</string>
     <string name="task_report">title: %1$s!!! The date of task: %2$s,the Description :  %3$s and the state of task: %4$s</string>
