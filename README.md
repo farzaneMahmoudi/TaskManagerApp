@@ -15,9 +15,11 @@ This application displays list of tasks. also you can add, delete, share and edi
 This application has three tabs including **TODO**, **DOING** and **DONE**. each task has features such as title,
 description, date, time and state(todo, doing, done),that you can add it to each list you want.
 
-**.** each user can log in after signing up and see her/his tasks.
+ **.** each user can log in after signing up and see her/his tasks.
+ 
+ **.** all users and their tasks are saved in database(ORM database used).
 
-**.** each task can have an image that you can set from your gallery or take it from the camera.
+ **.** each task can have an image that you can set from your gallery or take it from the camera.
 
 **.** you can delete all tasks from the icon located in the menu.
 
@@ -26,5 +28,3 @@ description, date, time and state(todo, doing, done),that you can add it to each
 **.** you can Search for tasks(Searching for the title, description of ice and clock)
 
 **.** if you sign in as admin, you can access to all users and their tasks and can edit their tasks or delete them and also delete users.
-
- 
